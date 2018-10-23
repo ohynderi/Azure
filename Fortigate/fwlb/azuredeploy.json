@@ -7,21 +7,23 @@
     "outsideSubnetName": { "type": "string" },
     "outsideSubnetPrefix": { "type": "string" },
     "insideSubnetName": { "type": "string" },
-    "insideSubnetPrefix": { "type": "string" }
+    "insideSubnetPrefix": { "type": "string" },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    }
   },
   "variables": {
-    "location": "[resourceGroup().location]"
   },
   "resources": [
     {
-      "name": "vmNet",
-      "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
+      "name": "vmnet",
+      "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "https://github.com/ohynderi/Azure/blob/master/Fortigate/fwlb/nested/vnet.json",
-          "contentVersion": "1.0.0.0"
+          "uri": "https://raw.githubusercontent.com/ohynderi/Azure/master/Fortigate/fwlb/nested/vnet.json"
         },
         "parameters": {
           "vnetName": { "value": "[parameters('vnetName')]" },
@@ -30,7 +32,7 @@
           "outsideSubnetPrefix": { "value": "[parameters('outsideSubnetPrefix')]" },
           "insideSubnetName": { "value": "[parameters('insideSubnetName')" },
           "insideSubnetPrefix": { "value": "[parameters('insideSubnetPrefix')]" },
-          "location": { "value": "[variables('location')]" }
+          "location": {"value": "[parameters('location')]"}
         }
       }
     }

@@ -8,7 +8,7 @@
     "outsideSubnetPrefix": { "type": "string" },
     "insideSubnetName": { "type": "string" },
     "insideSubnetPrefix": { "type": "string" },
-    "location":  {"type": "string"}
+    "location": { "type": "string" }
   },
   "variables": {
   },

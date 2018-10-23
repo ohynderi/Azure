@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": { "type": "string" },
+    "vnetPrefix": { "type": "string" },
+    "outsideSubnetName": { "type": "string" },
+    "outsideSubnetPrefix": { "type": "string" },
+    "insideSubnetName": { "type": "string" },
+    "insideSubnetPrefix": { "type": "string" },
+  },
+  "variables": {
+    "templateBaseUrl": "",
+    "configuration": {
+      "vnetSetupURL": "[concat(variables('templateBaseUrl'), '/vnet.json')]"
+    }
+  },
+  "resources": [
+    {
+      "name": "vmNet",
+      "type": "Microsoft.Resources/deployments",
+      "apicVersion": "2017-03-30",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').vnetSetupURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vnetName": { "value": "[parameters('vnetName')]" },
+          "vnetPrefix": { "value": "[parameters('vnetPrefix')]" },
+          "outsideSubnetName": { "value": "[parameters('outsideSubnetName')]" },
+          "outsideSubnetPrefix": { "value": "[parameters('outsideSubnetPrefix')]" },
+          "insideSubnetName": { "value": "[parameters('insideSubnetPrefix')" },
+          "insideSubnetPrefix": { "value": "[parameters('insideSubnetPrefix')]" }
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}

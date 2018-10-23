@@ -7,18 +7,15 @@
     "outsideSubnetName": { "type": "string" },
     "outsideSubnetPrefix": { "type": "string" },
     "insideSubnetName": { "type": "string" },
-    "insideSubnetPrefix": { "type": "string" },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]"
-    }
+    "insideSubnetPrefix": { "type": "string" } 
   },
   "variables": {
+    "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "apiVersion": "2017-05-10",
-      "name": "vmnet",
+      "name": "vnet",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -30,12 +27,17 @@
           "vnetPrefix": { "value": "[parameters('vnetPrefix')]" },
           "outsideSubnetName": { "value": "[parameters('outsideSubnetName')]" },
           "outsideSubnetPrefix": { "value": "[parameters('outsideSubnetPrefix')]" },
-          "insideSubnetName": { "value": "[parameters('insideSubnetName')" },
+          "insideSubnetName": { "value": "[parameters('insideSubnetName')]" },
           "insideSubnetPrefix": { "value": "[parameters('insideSubnetPrefix')]" },
-          "location": {"value": "[parameters('location')]"}
+          "location": {"value": "[variables('location')]"}
         }
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "vnetOutput": {
+      "type": "string",
+      "value": "[reference('vnet').outputs.vnetId.value]"
+    }
+  }
 }

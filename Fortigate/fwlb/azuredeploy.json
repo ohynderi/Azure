@@ -10,7 +10,7 @@
     "insideSubnetPrefix": { "type": "string" }
   },
   "variables": {
-    "templateBaseUrl": "",
+    "templateBaseUrl": "https://github.com/ohynderi/Azure/blob/master/Fortigate/fwlb/nested/vnet.json",
     "configuration": {
       "vnetSetupURL": "[concat(variables('templateBaseUrl'), '/vnet.json')]"
     }

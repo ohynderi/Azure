@@ -31,6 +31,7 @@
     <Content Include="Deploy-AzureResourceGroup.ps1" />
     <Content Include="nested\vnet.json" />
     <Content Include="nested\json.azuredeploy.parameters.json" />
+    <Content Include="nested\dummy.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

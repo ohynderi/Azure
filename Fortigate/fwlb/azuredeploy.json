@@ -7,7 +7,7 @@
     "outsideSubnetName": { "type": "string" },
     "outsideSubnetPrefix": { "type": "string" },
     "insideSubnetName": { "type": "string" },
-    "insideSubnetPrefix": { "type": "string" },
+    "insideSubnetPrefix": { "type": "string" }
   },
   "variables": {
     "templateBaseUrl": "",

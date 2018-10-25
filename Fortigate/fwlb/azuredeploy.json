@@ -11,7 +11,8 @@
     "outsideSubnet": "10.0.1.0/24",
     "insideSubnet": "10.0.2.0/24",
     "outsideFw1Ip": "10.0.1.4",
-    "outsideFw2Ip": "10.0.1.5"
+    "outsideFw2Ip": "10.0.1.5",
+    "availabilitySetName":  "avSet"
   },
   "resources": [
     {
@@ -26,8 +27,22 @@
         "parameters": {
           "vnetName": { "value": "[variables('vnetName')]" },
           "vnetSubnet": { "value": "[variables('vnetSubnet')]" },
-          "ousideSubnet": { "value": "[variables('outsideSubnet')]" },
+          "outsideSubnet": { "value": "[variables('outsideSubnet')]" },
           "insideSubnet": { "value": "[variables('insideSubnet')]" }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "avSet",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/ohynderi/Azure/master/Fortigate/fwlb/nested/availability_set.json"
+        },
+        "parameters": {
+          "availabilitySetName": { "value": "[variables('availabilitySetName')]" }
         }
       }
     },
@@ -35,7 +50,7 @@
       "apiVersion": "2017-05-10",
       "name": "nic",
       "type": "Microsoft.Resources/deployments",
-      "dependsOn": [ "Microsoft.Resources/deployments/vnet"],
+      "dependsOn": [ "Microsoft.Resources/deployments/vnet" ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -50,7 +65,7 @@
     }
   ],
   "outputs": {
-    "vnetOutput": {
+    "vnetId": {
       "type": "string",
       "value": "[reference('vnet').outputs.vnetId.value]"
     }

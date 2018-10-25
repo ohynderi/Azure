@@ -2,31 +2,23 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "FortiGateImageSKU": {
-      "type": "string",
-      "allowedValues": [ "fortinet_fg-vm", "fortinet_fg-vm_payg" ],
-      "defaultValue": "fortinet_fg-vm_payg"
-    },
-    "FortiGateImageVersion": {
-      "type": "string",
-      "defaultValue": "latest",
-      "allowedValues": [ "5.2.9", "5.4.6", "5.6.5", "6.0.0", "latest" ]
-    },
-    "location": { "type": "string" },
     "userName": { "type": "string" },
-    "userPassword": { "type":  "string" }
+    "userPassword": {"type": "string" }
   },
   "variables": {
+    "location": "[resourceGroup().location]",
     "vmName": "fw",
     "vmSize": "Standard_F1",
-    "availabilitySetName": "fortigate_av"
+    "availabilitySetName": "fortigate_av",
+    "imageSKU": "fortinet_fg-vm_payg",
+    "imageVersion": "6.0.0"
   },
   "resources": [
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
       "apiVersion": "2017-03-30",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "properties": {
         "platformFaultDomainCount": 2,
         "platformUpdateDomainCount": 2

@@ -32,6 +32,8 @@
     <Content Include="nested\vnet.json" />
     <Content Include="nested\vnet.parameters.json" />
     <Content Include="nested\dummy.json" />
+    <Content Include="nested\availability_set.json" />
+    <Content Include="nested\availability_set.parameters.json" />
     <None Include="nested\fortigate.json" />
     <None Include="nested\inside_lb.json" />
     <Content Include="nested\nic.json" />

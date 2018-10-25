@@ -71,7 +71,7 @@
     },
     {
       "apiVersion": "2017-05-10",
-      "name": "nic",
+      "name": "fw",
       "type": "Microsoft.Resources/deployments",
       "dependsOn": [ "Microsoft.Resources/deployments/vnet", "Microsoft.Resources/deployments/avSet" ],
       "properties": {

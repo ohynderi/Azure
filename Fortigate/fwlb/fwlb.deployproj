@@ -30,8 +30,14 @@
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
     <Content Include="nested\vnet.json" />
-    <Content Include="nested\json.azuredeploy.parameters.json" />
+    <Content Include="nested\vnet.parameters.json" />
     <Content Include="nested\dummy.json" />
+    <None Include="nested\fortigate.json" />
+    <None Include="nested\inside_lb.json" />
+    <Content Include="nested\nic.json" />
+    <Content Include="nested\nic.parameters.json" />
+    <None Include="nested\public_ip.json" />
+    <None Include="nested\route_tables.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

@@ -2,15 +2,17 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vnetName": { "type": "string" },
-    "vnetPrefix": { "type": "string" },
-    "outsideSubnetName": { "type": "string" },
-    "outsideSubnetPrefix": { "type": "string" },
-    "insideSubnetName": { "type": "string" },
-    "insideSubnetPrefix": { "type": "string" } 
+    "userName": { "type": "string" },
+    "password": { "type": "string" }
   },
   "variables": {
-    "location": "[resourceGroup().location]"
+    "location": "[resourceGroup().location]",
+    "vnetName": "fwVnet",
+    "vnetSubnet": "10.0.0.0/16",
+    "ousideSubnet": "10.0.1.0/24",
+    "insideSubnet": "10.0.2.0/24",
+    "outsideFw1Ip": "10.0.1.4",
+    "outsideFw2Ip": "10.0.1.5"
   },
   "resources": [
     {
@@ -23,13 +25,26 @@
           "uri": "https://raw.githubusercontent.com/ohynderi/Azure/master/Fortigate/fwlb/nested/vnet.json"
         },
         "parameters": {
-          "vnetName": { "value": "[parameters('vnetName')]" },
-          "vnetPrefix": { "value": "[parameters('vnetPrefix')]" },
-          "outsideSubnetName": { "value": "[parameters('outsideSubnetName')]" },
-          "outsideSubnetPrefix": { "value": "[parameters('outsideSubnetPrefix')]" },
-          "insideSubnetName": { "value": "[parameters('insideSubnetName')]" },
-          "insideSubnetPrefix": { "value": "[parameters('insideSubnetPrefix')]" },
-          "location": {"value": "[variables('location')]"}
+          "vnetName": { "value": "[variables('vnetName')]" },
+          "vnetSubnet": { "value": "[variables('vnetSubnet')]" },
+          "ousideSubnet": { "value": "[variables('ousideSubnet')]" },
+          "insideSubnet": { "value": "[variables('insideSubnet')]" }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "vnet",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/ohynderi/Azure/master/Fortigate/fwlb/nested/nic.json"
+        },
+        "parameters": {
+          "vnetName": { "value": "[variables('vnetName')]" },
+          "outsideFw1Ip": { "value": "[variables('outsideFw1Ip')]" },
+          "outsideFw2Ip": { "value": "[variables('outsideFw2Ip')]" }
         }
       }
     }

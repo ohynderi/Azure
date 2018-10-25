@@ -3,14 +3,12 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vnetName": { "type": "string" },
-    "vnetPrefix": { "type": "string" },
-    "outsideSubnetName": { "type": "string" },
-    "outsideSubnetPrefix": { "type": "string" },
-    "insideSubnetName": { "type": "string" },
-    "insideSubnetPrefix": { "type": "string" },
-    "location": { "type": "string" }
+    "vnetSubnet": { "type": "string" },
+    "outsideSubnet": { "type": "string" },
+    "insideSubnet": { "type": "string" }
   },
   "variables": {
+    "location": "[resourceGroup().location]"
   },
   "resources": [
     {
@@ -18,22 +16,22 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-06-01",
       "dependsOn": [],
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "properties": {
         "addressSpace": {
-          "addressPrefixes": [ "[parameters('vnetPrefix')]" ]
+          "addressPrefixes": [ "[parameters('vnetSubnet')]" ]
         },
         "subnets": [
           {
-            "name": "[parameters('outsideSubnetName')]",
+            "name": "outside",
             "properties": {
-              "addressPrefix": "[parameters('outsideSubnetPrefix')]"
+              "addressPrefix": "[parameters('outsideSubnet')]"
             }
           },
           {
-            "name": "[parameters('insideSubnetName')]",
+            "name": "inside",
             "properties": {
-              "addressPrefix": "[parameters('insideSubnetPrefix')]"
+              "addressPrefix": "[parameters('insideSubnet')]"
             }
           }
         ]
@@ -43,7 +41,15 @@
   "outputs": {
     "vnetId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      "value": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+    },
+    "subnetId1": {
+      "type": "string",
+      "value": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'outside')]"
+    },
+    "subnetId2": {
+      "type": "string",
+      "value": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'inside')]"
     }
   }
 }

@@ -6,10 +6,9 @@
     "password": { "type": "string" }
   },
   "variables": {
-    "location": "[resourceGroup().location]",
     "vnetName": "fwVnet",
     "vnetSubnet": "10.0.0.0/16",
-    "ousideSubnet": "10.0.1.0/24",
+    "outsideSubnet": "10.0.1.0/24",
     "insideSubnet": "10.0.2.0/24",
     "outsideFw1Ip": "10.0.1.4",
     "outsideFw2Ip": "10.0.1.5"
@@ -27,15 +26,16 @@
         "parameters": {
           "vnetName": { "value": "[variables('vnetName')]" },
           "vnetSubnet": { "value": "[variables('vnetSubnet')]" },
-          "ousideSubnet": { "value": "[variables('ousideSubnet')]" },
+          "ousideSubnet": { "value": "[variables('outsideSubnet')]" },
           "insideSubnet": { "value": "[variables('insideSubnet')]" }
         }
       }
     },
     {
       "apiVersion": "2017-05-10",
-      "name": "vnet",
+      "name": "nic",
       "type": "Microsoft.Resources/deployments",
+      "dependsOn": [ "Microsoft.Resources/deployments/vnet"],
       "properties": {
         "mode": "Incremental",
         "templateLink": {

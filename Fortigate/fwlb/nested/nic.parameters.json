@@ -8,11 +8,14 @@
     "outsideFw2Ip": {
       "value": "10.0.0.5"
     },
-    "testName": {
-      "value": "testNic"
-    },
     "vnetName": {
       "value": "myVnet"
+    },
+    "insideFw1Ip": {
+      "value": "10.0.1.4"
+    },
+    "insideFw2Ip": {
+      "value": "10.0.1.5"
     }
   }
 }

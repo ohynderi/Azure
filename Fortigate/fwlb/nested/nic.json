@@ -4,7 +4,10 @@
   "parameters": {
     "vnetName":  { "type": "string"},
     "outsideFw1Ip": { "type": "string" },
-    "outsideFw2Ip": { "type": "string" }
+    "outsideFw2Ip": { "type": "string" },
+    "insideFw1Ip": { "type": "string" },
+    "insideFw2Ip": { "type": "string" },
+    "namePrefix": {"type": "string", "defaultValue": "fw" }
   },
   "variables": {
     "location": "[resourceGroup().location]"
@@ -13,7 +16,7 @@
     {
       "apiVersion": "2016-03-30",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat('fw', copyIndex(1), '-outside-nic')]",
+      "name": "[concat(parameters('namePrefix'), copyIndex(1), '-outside-nic')]",
       "location": "[variables('location')]",
       "properties": {
         "ipConfigurations": [
@@ -24,6 +27,31 @@
               "privateIPAddress": "[parameters(concat('outsideFw', copyIndex(1), 'Ip'))]",
               "subnet": {
                 "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'outside')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      },
+      "copy": {
+        "name": "nicLoop",
+        "count": 2
+      }
+    },
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(parameters('namePrefix'), copyIndex(1), '-inside-nic')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters(concat('insideFw', copyIndex(1), 'Ip'))]",
+              "subnet": {
+                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'inside')]"
               }
             }
           }

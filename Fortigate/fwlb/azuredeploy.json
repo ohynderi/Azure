@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "userName": { "type": "string" },
-    "password": { "type": "string" }
+    "userPassword": { "type": "string" }
   },
   "variables": {
     "vnetName": "fwVnet",
@@ -12,7 +12,10 @@
     "insideSubnet": "10.0.2.0/24",
     "outsideFw1Ip": "10.0.1.4",
     "outsideFw2Ip": "10.0.1.5",
-    "availabilitySetName":  "avSet"
+    "insideFw1Ip": "10.0.2.4",
+    "insideFw2Ip": "10.0.2.5",
+    "availabilitySetName": "avSet",
+    "namePrefix": "fw"
   },
   "resources": [
     {
@@ -59,7 +62,28 @@
         "parameters": {
           "vnetName": { "value": "[variables('vnetName')]" },
           "outsideFw1Ip": { "value": "[variables('outsideFw1Ip')]" },
-          "outsideFw2Ip": { "value": "[variables('outsideFw2Ip')]" }
+          "outsideFw2Ip": { "value": "[variables('outsideFw2Ip')]" },
+          "insideFw1Ip": { "value": "[variables('insideFw1Ip')]" },
+          "insideFw2Ip": { "value": "[variables('insideFw1Ip')]" },
+          "namePrefix": { "value": "[variables('namePrefix')]" }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "nic",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [ "Microsoft.Resources/deployments/vnet", "Microsoft.Resources/deployments/avSet" ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/ohynderi/Azure/master/Fortigate/fwlb/nested/fortigate.json"
+        },
+        "parameters": {
+          "userName": { "value": "[parameters('userName')]" },
+          "userPassword": { "value": "[parameters('userPassword')]" },
+          "availabilitySetName": { "value": "[variables('availabilitySetName')]" },
+          "namePrefix": { "value": "[variables('namePrefix')]" }
         }
       }
     }
@@ -67,7 +91,11 @@
   "outputs": {
     "vnetId": {
       "type": "string",
-      "value": "[reference('vnet').outputs.vnetId.value]"
+      "value": "[reference('vnet').outputs.resourceId.value]"
+    },
+    "avSetId": {
+      "type": "string",
+      "value": "[reference('avSet').outputs.resourceId.value]"
     }
   }
 }

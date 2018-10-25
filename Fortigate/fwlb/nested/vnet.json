@@ -39,17 +39,9 @@
     }
   ],
   "outputs": {
-    "vnetId": {
+    "resourceId": {
       "type": "string",
       "value": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
-    },
-    "subnetId1": {
-      "type": "string",
-      "value": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'outside')]"
-    },
-    "subnetId2": {
-      "type": "string",
-      "value": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'inside')]"
     }
   }
 }

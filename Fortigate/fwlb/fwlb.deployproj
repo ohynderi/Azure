@@ -39,7 +39,8 @@
     <None Include="nested\inside_lb.json" />
     <Content Include="nested\nic.json" />
     <Content Include="nested\nic.parameters.json" />
-    <None Include="nested\public_ip.json" />
+    <Content Include="nested\public_ip.json" />
+    <Content Include="nested\public_ip.parameters.json" />
     <None Include="nested\route_tables.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />

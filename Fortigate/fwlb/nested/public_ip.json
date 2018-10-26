@@ -2,10 +2,34 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "namePrefix": { "type": "string" }
   },
   "variables": {
+    "location": "[resourceGroup().location]",
+    "sku": "Standard",
+    "publicIPAllocationMethod": "Static",
+    "idleTimeoutInMinutes": 4,
+    "publicIpAddressVersion":  "IPv4"
   },
   "resources": [
+    {
+      "apiVersion": "2018-08-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(parameters('namePrefix'), copyIndex(1), '-DIP')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "[variables('sku')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAllocationMethod')]",
+        "idleTimeoutInMinutes": "[variables('idleTimeoutInMinutes')]",
+        "publicIpAddressVersion": "[variables('publicIpAddressVersion')]"
+      },
+      "copy": {
+        "name": "iploop",
+        "count": 2
+      }
+    }
   ],
   "outputs": {
   }

@@ -8,12 +8,12 @@
   "variables": {
     "vnetName": "fwVnet",
     "vnetSubnet": "10.0.0.0/16",
-    "outsideSubnet": "10.0.1.0/24",
-    "insideSubnet": "10.0.2.0/24",
-    "outsideFw1Ip": "10.0.1.4",
-    "outsideFw2Ip": "10.0.1.5",
-    "insideFw1Ip": "10.0.2.4",
-    "insideFw2Ip": "10.0.2.5",
+    "outsideSubnet": "10.0.0.0/24",
+    "insideSubnet": "10.0.1.0/24",
+    "outsideFw1Ip": "10.0.0.4",
+    "outsideFw2Ip": "10.0.0.5",
+    "insideFw1Ip": "10.0.1.4",
+    "insideFw2Ip": "10.0.1.5",
     "availabilitySetName": "avSet",
     "namePrefix": "fw"
   },
@@ -64,16 +64,16 @@
           "outsideFw1Ip": { "value": "[variables('outsideFw1Ip')]" },
           "outsideFw2Ip": { "value": "[variables('outsideFw2Ip')]" },
           "insideFw1Ip": { "value": "[variables('insideFw1Ip')]" },
-          "insideFw2Ip": { "value": "[variables('insideFw1Ip')]" },
+          "insideFw2Ip": { "value": "[variables('insideFw2Ip')]" },
           "namePrefix": { "value": "[variables('namePrefix')]" }
         }
       }
     },
     {
       "apiVersion": "2017-05-10",
-      "name": "fw",
+      "name": "firewall",
       "type": "Microsoft.Resources/deployments",
-      "dependsOn": [ "Microsoft.Resources/deployments/vnet", "Microsoft.Resources/deployments/avSet" ],
+      "dependsOn": [ "Microsoft.Resources/deployments/nic", "Microsoft.Resources/deployments/avSet" ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -83,6 +83,21 @@
           "userName": { "value": "[parameters('userName')]" },
           "userPassword": { "value": "[parameters('userPassword')]" },
           "availabilitySetName": { "value": "[variables('availabilitySetName')]" },
+          "namePrefix": { "value": "[variables('namePrefix')]" }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "public_ip",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [ "Microsoft.Resources/deployments/vnet" ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/ohynderi/Azure/master/Fortigate/fwlb/nested/public_ip.json"
+        },
+        "parameters": {
           "namePrefix": { "value": "[variables('namePrefix')]" }
         }
       }
